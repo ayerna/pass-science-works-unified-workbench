@@ -19,6 +19,12 @@ Copy-Item (Join-Path $root "README.md") $stage
 Copy-Item (Join-Path $root "CMakeLists.txt") $stage
 Copy-Item (Join-Path $root "build_windows.bat") $stage
 Copy-Item (Join-Path $root "toolchain-mingw.cmake") $stage
+# Git bundle (readable commit log, required by submission spec)
+$bundle = Join-Path $root "workbench.bundle"
+if (Test-Path $bundle) { Copy-Item $bundle $stage }
+# VS Code one-action run config
+$vscode = Join-Path $root ".vscode"
+if (Test-Path $vscode) { Copy-Item $vscode (Join-Path $stage ".vscode") -Recurse }
 $zip = Join-Path $root "$CandidateId`_Workbench.zip"
 if (Test-Path $zip) { Remove-Item $zip -Force }
 Compress-Archive -Path "$stage\*" -DestinationPath $zip
