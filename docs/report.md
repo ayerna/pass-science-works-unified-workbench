@@ -1,11 +1,11 @@
 # Unified Engineering Workbench — Technical Report
 **Pass Science Works — Common Internship Assignment**
 
-- **Candidate ID:** RA2311033010060
-- **Brief Receipt Date:** 30th October 2026
-- **Submission Date:** 1st November 2026 (Day 3 of 15 calendar days)
-- **Tracked Effort:** ~44 hours (within 40–50 hr allocation)
-- **Primary Delivery Target:** Windows 11 x64 (verified native on AMD Ryzen 5 5600H, 15.3 GB RAM)
+- **Candidate ID:** Not assigned at time of submission
+- **Brief Receipt Date:** To be confirmed, deadline given as 2nd November 2026 at 10:00 am
+- **Submission Date:** Not recorded
+- **Tracked Effort:** Not recorded
+- **Primary Delivery Target:** Windows 11 x64 (clean-machine launch gate unconfirmed)
 
 ---
 
@@ -14,7 +14,7 @@ The Unified Engineering Workbench is delivered as a decoupled dual-layer archite
 1. **C++17 Core Engine (`workbench.exe`):** High-performance CLI binary compiled with zero external dependencies (C++ standard library only). Implements strict STL/CSV parsing, 1D steady-state thermal FEA, multicore parallel batch solving with a bounded thread pool, backpropagation with finite-difference gradient verification, and mock embedded adapters.
 2. **Interactive Presentation Layer (`frontend/index.html`):** Single-page web application offering Geometry, Thermal, Performance, and Hardware views. Visualizes ASCII STL CAD meshes, displays colored 3D ANSYS temperature point clouds with inspection, plots FEA convergence curves, and drives interactive embedded hardware simulation.
 3. **One-Click Delivery (`Launch.exe`):** Native Windows GUI-subsystem binary (541 KB, statically linked with MinGW-w64 runtime, importing only system DLLs `KERNEL32`, `msvcrt`, `SHELL32`, `USER32`). Double-clicking `Launch.exe` spawns `workbench.exe all` without popping up a console window, regenerates `results/*.csv`, and automatically opens `frontend/index.html` in the user's default browser via `ShellExecuteA`. No installation, administrator privileges, first-run build, or internet connection is required.
-   - **Launch-to-Ready Time:** **~2.4 seconds** cold start (process launch to browser handoff; backend compute accounts for 66 ms; browser tab interactive within ~3 s).
+   - **Launch-to-Ready Time:** Unconfirmed on a clean Windows 11 machine; no timing is claimed here.
 4. **Editor One-Action Run:** Configured via `.vscode/launch.json` running `scripts/serve.py` (Python 3 standard library only), serving the application on `http://localhost:8000` (verified HTTP 200). Full source builds are supported across Windows and Linux via CMake 3.28+.
 
 ---
@@ -109,9 +109,9 @@ The workbench simulates a host engineering station controlling three target devi
 ### Network Topology & Forward Pass
 A compact single-input single-output regression network with one hidden unit:
 $$\text{Hidden: } z = w x + b, \quad h = \tanh(z) \qquad \text{Output: } \hat{y} = v h + c \qquad \text{Loss: } J = \frac{1}{2}(\hat{y} - y)^2$$
-- **Initial Values:** Input $x = 0.5$, Target $y = 2.0$; Weights $w = 0.5$, $v = 1.0$; Biases $b = 0.25$, $c = 0.0$.
+- **Initial Values:** Input $x = 1$, Target $y = 2.0$; Weights $w = 0.5$, $v = 1.0$; Biases $b = 0$, $c = 0.0$.
 - **Forward Numerical Evaluation:**
-  $$z = 0.5(0.5) + 0.25 = 0.500000$$
+  $$z = 0.5(1) + 0 = 0.500000$$
   $$h = \tanh(0.5) \approx 0.462117157$$
   $$\hat{y} = 1.0(0.462117157) + 0.0 = 0.462117157$$
   $$J = \frac{1}{2}(0.462117157 - 2.0)^2 = \frac{1}{2}(-1.537882843)^2 \approx 1.182541819$$
@@ -121,7 +121,7 @@ Let residual $\delta_{\text{out}} = \frac{\partial J}{\partial \hat{y}} = (\hat{
 1. $\frac{\partial J}{\partial c} = \delta_{\text{out}} \cdot 1 = \mathbf{-1.537882843}$
 2. $\frac{\partial J}{\partial v} = \delta_{\text{out}} \cdot h = (-1.537882843)(0.462117157) = \mathbf{-0.710682052}$
 3. $\frac{\partial J}{\partial z} = \delta_{\text{out}} \cdot v \cdot (1 - h^2) = (-1.537882843)(1.0)(1 - 0.462117157^2) = \mathbf{-1.209463660}$
-4. $\frac{\partial J}{\partial w} = \frac{\partial J}{\partial z} \cdot x = (-1.209463660)(0.5) = \mathbf{-0.604731830}$ *(Note: if derived with shared pre-weighting, $x \frac{\partial J}{\partial z}$)*
+4. $\frac{\partial J}{\partial w} = \frac{\partial J}{\partial z} \cdot x = (-1.209463660)(1) = \mathbf{-1.209463660}$
 5. $\frac{\partial J}{\partial b} = \frac{\partial J}{\partial z} \cdot 1 = \mathbf{-1.209463660}$
 
 *Finite-Difference Verification:* Central differences $\frac{J(\theta + \epsilon) - J(\theta - \epsilon)}{2\epsilon}$ with step $\epsilon = 10^{-6}$ evaluated in `src/backprop.hpp` match the analytical values with errors $\sim 10^{-10}$, exceeding the required $10^{-5}$ tolerance.
@@ -142,15 +142,13 @@ All gradients are negative because prediction $\hat{y} < y$; thus gradient desce
 |:---|:---:|:---:|:---|
 | **C++ Core Backend** | $\ge 6/12$ | **12 / 12** | C++17, STL/CSV validation, FEA, parallel pool, backprop, mock hardware |
 | **Thermal FEA Accuracy** | $\ge 7/14$ | **14 / 14** | Exact midpoint errors (1.25 to 0.0195°C), $O(h^2)$ verified, Dirichlet fixed |
-| **Delivery & Packaging** | $\ge 3/6$ | **6 / 6** | `RA2311033010060_Workbench.zip`, no build/install needed, 2.4s launch |
-| **Working Standalone Launch** | Pass/Fail | **PASS** | Double-click `Launch.exe` opens browser without terminal or admin rights |
-| **Overall Score Target** | $\ge 80/100$ | **Strong Pass** | Complete deliverables across Tasks A–F, relative paths, clean audit |
+| **Delivery & Packaging** | $\ge 3/6$ | Self-assessment only | `Gladwin_Benjamin_Workbench.zip`; clean-machine launch and timing unconfirmed |
+| **Working Standalone Launch** | Pass/Fail | Unconfirmed | Clean-machine double-click and browser readiness were not verified in this working copy |
+| **Overall Score Target** | $\ge 80/100$ | Not self-assessed | Assessment score is reserved for Pass Science Works |
 
 ### Disclosure of AI Assistance & Caught Suggestions
 - **Sessions Disclosed:** Tooling utilized included initial draft structuring (Muse Spark) and native Windows 11 compilation, verification, and audit refinement (Google Antigravity).
 - **Incorrect Suggestions Caught & Corrected:**
   1. *FEA Midpoint Tolerance:* An early suggestion proposed labelling FEA $N=80$ accuracy as "within ~0.3°C". Mathematical midpoint check proved the actual error is $0.0195312^\circ\text{C}$; the text and code were corrected accordingly.
   2. *Backpropagation Generalisation:* An early prompt described the loss curve after 100 steps as "flattening due to generalization". The loss actually drops to $1.70 \times 10^{-20}$; this was corrected to clarify that 4 parameters are memorizing a single data point.
-- **Ownership Statement:** All code, documentation, and analysis in this repository represent the original submission of Candidate RA2311033010060, created with disclosed AI pair-programming assistance. No proprietary CAD software, commercial solvers, or third-party datasets were employed.
-
-
+- **Ownership Statement:** All code, documentation, and analysis in this repository represent the original submission of the candidate, created with disclosed AI pair-programming assistance. No proprietary CAD software, commercial solvers, or third-party datasets were employed.

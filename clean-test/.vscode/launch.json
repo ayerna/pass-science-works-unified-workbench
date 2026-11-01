@@ -1,0 +1,1 @@
+{"version":"0.2.0","configurations":[{"name":"Run Workbench (one action)","type":"debugpy","request":"launch","program":"${workspaceFolder}/scripts/serve.py","console":"integratedTerminal","justMyCode":true,"cwd":"${workspaceFolder}"}]}

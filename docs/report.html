@@ -84,11 +84,11 @@
 <h1>Unified Engineering Workbench — Technical Report</h1>
 <p><strong>Pass Science Works — Common Internship Assignment</strong></p>
 <ul>
-<li><strong>Candidate ID:</strong> RA2311033010060</li>
-<li><strong>Brief Receipt Date:</strong> 30th October 2026</li>
-<li><strong>Submission Date:</strong> 1st November 2026 (Day 3 of 15 calendar days)</li>
-<li><strong>Tracked Effort:</strong> ~44 hours (within 40–50 hr allocation)</li>
-<li><strong>Primary Delivery Target:</strong> Windows 11 x64 (verified native on AMD Ryzen 5 5600H, 15.3 GB RAM)</li>
+<li><strong>Candidate ID:</strong> Not assigned at time of submission</li>
+<li><strong>Brief Receipt Date:</strong> To be confirmed, deadline given as 2nd November 2026 at 10:00 am</li>
+<li><strong>Submission Date:</strong> Not recorded</li>
+<li><strong>Tracked Effort:</strong> Not recorded</li>
+<li><strong>Primary Delivery Target:</strong> Windows 11 x64 (clean-machine launch gate unconfirmed)</li>
 </ul>
 <hr />
 <h2>1. Executive Summary &amp; Architecture (Task A)</h2>
@@ -96,7 +96,7 @@
 1. <strong>C++17 Core Engine (<code>workbench.exe</code>):</strong> High-performance CLI binary compiled with zero external dependencies (C++ standard library only). Implements strict STL/CSV parsing, 1D steady-state thermal FEA, multicore parallel batch solving with a bounded thread pool, backpropagation with finite-difference gradient verification, and mock embedded adapters.
 2. <strong>Interactive Presentation Layer (<code>frontend/index.html</code>):</strong> Single-page web application offering Geometry, Thermal, Performance, and Hardware views. Visualizes ASCII STL CAD meshes, displays colored 3D ANSYS temperature point clouds with inspection, plots FEA convergence curves, and drives interactive embedded hardware simulation.
 3. <strong>One-Click Delivery (<code>Launch.exe</code>):</strong> Native Windows GUI-subsystem binary (541 KB, statically linked with MinGW-w64 runtime, importing only system DLLs <code>KERNEL32</code>, <code>msvcrt</code>, <code>SHELL32</code>, <code>USER32</code>). Double-clicking <code>Launch.exe</code> spawns <code>workbench.exe all</code> without popping up a console window, regenerates <code>results/*.csv</code>, and automatically opens <code>frontend/index.html</code> in the user's default browser via <code>ShellExecuteA</code>. No installation, administrator privileges, first-run build, or internet connection is required.
-   - <strong>Launch-to-Ready Time:</strong> <strong>~2.4 seconds</strong> cold start (process launch to browser handoff; backend compute accounts for 66 ms; browser tab interactive within ~3 s).
+   - <strong>Launch-to-Ready Time:</strong> Unconfirmed on a clean Windows 11 machine; no timing is claimed here.
 4. <strong>Editor One-Action Run:</strong> Configured via <code>.vscode/launch.json</code> running <code>scripts/serve.py</code> (Python 3 standard library only), serving the application on <code>http://localhost:8000</code> (verified HTTP 200). Full source builds are supported across Windows and Linux via CMake 3.28+.</p>
 <hr />
 <div style="page-break-before: always; break-before: page;"></div><h2>2. CAD and ANSYS Visualisation (Task B)</h2>
@@ -271,9 +271,9 @@ $$-k A \frac{d^2 T}{dx^2} = q A \quad \implies \quad \frac{d^2 T}{dx^2} = -\frac
 <h3>Network Topology &amp; Forward Pass</h3>
 <p>A compact single-input single-output regression network with one hidden unit:
 $$\text{Hidden: } z = w x + b, \quad h = \tanh(z) \qquad \text{Output: } \hat{y} = v h + c \qquad \text{Loss: } J = \frac{1}{2}(\hat{y} - y)^2$$
-- <strong>Initial Values:</strong> Input $x = 0.5$, Target $y = 2.0$; Weights $w = 0.5$, $v = 1.0$; Biases $b = 0.25$, $c = 0.0$.
+- <strong>Initial Values:</strong> Input $x = 1$, Target $y = 2.0$; Weights $w = 0.5$, $v = 1.0$; Biases $b = 0$, $c = 0.0$.
 - <strong>Forward Numerical Evaluation:</strong>
-  $$z = 0.5(0.5) + 0.25 = 0.500000$$
+  $$z = 0.5(1) + 0 = 0.500000$$
   $$h = \tanh(0.5) \approx 0.462117157$$
   $$\hat{y} = 1.0(0.462117157) + 0.0 = 0.462117157$$
   $$J = \frac{1}{2}(0.462117157 - 2.0)^2 = \frac{1}{2}(-1.537882843)^2 \approx 1.182541819$$</p>
@@ -282,7 +282,7 @@ $$\text{Hidden: } z = w x + b, \quad h = \tanh(z) \qquad \text{Output: } \hat{y}
 1. $\frac{\partial J}{\partial c} = \delta_{\text{out}} \cdot 1 = \mathbf{-1.537882843}$
 2. $\frac{\partial J}{\partial v} = \delta_{\text{out}} \cdot h = (-1.537882843)(0.462117157) = \mathbf{-0.710682052}$
 3. $\frac{\partial J}{\partial z} = \delta_{\text{out}} \cdot v \cdot (1 - h^2) = (-1.537882843)(1.0)(1 - 0.462117157^2) = \mathbf{-1.209463660}$
-4. $\frac{\partial J}{\partial w} = \frac{\partial J}{\partial z} \cdot x = (-1.209463660)(0.5) = \mathbf{-0.604731830}$ <em>(Note: if derived with shared pre-weighting, $x \frac{\partial J}{\partial z}$)</em>
+4. $\frac{\partial J}{\partial w} = \frac{\partial J}{\partial z} \cdot x = (-1.209463660)(1) = \mathbf{-1.209463660}$
 5. $\frac{\partial J}{\partial b} = \frac{\partial J}{\partial z} \cdot 1 = \mathbf{-1.209463660}$</p>
 <p><em>Finite-Difference Verification:</em> Central differences $\frac{J(\theta + \epsilon) - J(\theta - \epsilon)}{2\epsilon}$ with step $\epsilon = 10^{-6}$ evaluated in <code>src/backprop.hpp</code> match the analytical values with errors $\sim 10^{-10}$, exceeding the required $10^{-5}$ tolerance.</p>
 <h3>Parameter Update &amp; 100-Step Optimization</h3>
@@ -337,20 +337,20 @@ All gradients are negative because prediction $\hat{y} &lt; y$; thus gradient de
 <tr>
 <td style="text-align: left;"><strong>Delivery &amp; Packaging</strong></td>
 <td style="text-align: center;">$\ge 3/6$</td>
-<td style="text-align: center;"><strong>6 / 6</strong></td>
-<td style="text-align: left;"><code>RA2311033010060_Workbench.zip</code>, no build/install needed, 2.4s launch</td>
+<td style="text-align: center;">Self-assessment only</td>
+<td style="text-align: left;"><code>Gladwin_Benjamin_Workbench.zip</code>; clean-machine launch and timing unconfirmed</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Working Standalone Launch</strong></td>
 <td style="text-align: center;">Pass/Fail</td>
-<td style="text-align: center;"><strong>PASS</strong></td>
-<td style="text-align: left;">Double-click <code>Launch.exe</code> opens browser without terminal or admin rights</td>
+<td style="text-align: center;">Unconfirmed</td>
+<td style="text-align: left;">Clean-machine double-click and browser readiness were not verified in this working copy</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Overall Score Target</strong></td>
 <td style="text-align: center;">$\ge 80/100$</td>
-<td style="text-align: center;"><strong>Strong Pass</strong></td>
-<td style="text-align: left;">Complete deliverables across Tasks A–F, relative paths, clean audit</td>
+<td style="text-align: center;">Not self-assessed</td>
+<td style="text-align: left;">Assessment score is reserved for Pass Science Works</td>
 </tr>
 </tbody>
 </table>
@@ -360,7 +360,7 @@ All gradients are negative because prediction $\hat{y} &lt; y$; thus gradient de
 <li><strong>Incorrect Suggestions Caught &amp; Corrected:</strong></li>
 <li><em>FEA Midpoint Tolerance:</em> An early suggestion proposed labelling FEA $N=80$ accuracy as "within ~0.3°C". Mathematical midpoint check proved the actual error is $0.0195312^\circ\text{C}$; the text and code were corrected accordingly.</li>
 <li><em>Backpropagation Generalisation:</em> An early prompt described the loss curve after 100 steps as "flattening due to generalization". The loss actually drops to $1.70 \times 10^{-20}$; this was corrected to clarify that 4 parameters are memorizing a single data point.</li>
-<li><strong>Ownership Statement:</strong> All code, documentation, and analysis in this repository represent the original submission of Candidate RA2311033010060, created with disclosed AI pair-programming assistance. No proprietary CAD software, commercial solvers, or third-party datasets were employed.</li>
+<li><strong>Ownership Statement:</strong> All code, documentation, and analysis in this repository represent the original submission of the candidate, created with disclosed AI pair-programming assistance. No proprietary CAD software, commercial solvers, or third-party datasets were employed.</li>
 </ul>
 </body>
 </html>

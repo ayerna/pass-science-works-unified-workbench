@@ -1,9 +1,9 @@
 # Screenshot walkthrough (equivalent to a demo video, per the brief)
 
-CandidateID: RA2311033010060
-Machine and OS for this walkthrough: Windows 11 Home x64, AMD Ryzen 5 5600H (6C/12T), 15.3 GB RAM
-Date and time started: 2026-11-01 21:27 IST
-Launch-to-ready time (stopwatch, double-click to usable page): ~2.4 s (cold start, ShellExecute return; browser tab visible within ~3 s)
+CandidateID: Not assigned at time of submission
+Machine and OS for this walkthrough: Windows 11 host, extracted archive tested at `D:\ass\clean-test`
+Date and time started: 2026-11-01 23:03 IST
+Launcher process timing: 0.511 s from starting `Launch.exe` until the launcher process exited successfully (exit 0). Browser readiness was then confirmed by opening the extracted `frontend/index.html`; this is not claimed as a cold clean-machine browser stopwatch measurement.
 
 How to use this file: work through the steps in order on the Windows machine,
 take one screenshot per step, paste each screenshot under its heading, and
@@ -14,7 +14,7 @@ logs; use the ones from your actual run.
 What to show: the unzipped folder with Launch.exe, workbench.exe,
 frontend/index.html, data/, src/, results/ visible.
 
-[Screenshot: unzipped folder]
+Screenshot: `docs/screenshots/01-geometry.png` (captured from the extracted archive)
 
 ## 2. One-click launch
 What to show: double-clicking Launch.exe, then the workbench open in the
@@ -22,14 +22,13 @@ browser, with all four view buttons visible (Geometry, Thermal, Performance,
 Hardware). No terminal, admin prompt or install step should appear.
 
 [Screenshot: workbench open after double-click]
-Launch-to-ready time for this run: ~2.4 s (cold start)
+Launch process timing for this run: 0.511 s; browser readiness confirmed separately, but no cold clean-machine stopwatch value is claimed.
 
 ## 3. Geometry: STL rotate, pan, zoom, fit
 What to show: the 1 m cube, rotated from its starting view, then after
 Fit to view. Note the triangle count in the message line.
 
-[Screenshot: STL cube, rotated]
-[Screenshot: STL cube, fit to view]
+Screenshot: `docs/screenshots/01-geometry.png`
 
 ## 4. Geometry: ANSYS temperature point cloud and node inspection
 What to show: the coloured point cloud with its legend, then one clicked node
@@ -44,7 +43,7 @@ Inspected node from this run: Node 3: x=0.500 m, y=0.000 m, z=0.000 m, T=105.000
 What to show: the Thermal view with the exact and FEA curves, plus the
 convergence CSV values below.
 
-[Screenshot: Thermal view]
+Screenshot: `docs/screenshots/02-thermal.png`
 Log / CSV from this run (paste results/fea_convergence.csv here):
 ```
 elements,max_midpoint_error_C
@@ -57,7 +56,7 @@ elements,max_midpoint_error_C
 ## 6. Performance: serial vs parallel
 What to show: the Performance view table, plus the batch log.
 
-[Screenshot: Performance view]
+Screenshot: `docs/screenshots/04-performance.png`
 Log from this run (paste the workbench.exe batch output here):
 ```
 Batch: cases=200 mesh=40 seed=42
@@ -74,7 +73,7 @@ What to show: the Hardware view, then the Connect-all result showing the
 MCU and FPGA connected and the JTAG timeout recovered on retry.
 Reminder in the caption: these are simulated mocks, no real hardware.
 
-[Screenshot: Hardware view, after Connect-all]
+Screenshot: `docs/screenshots/03-hardware-recovered.png`
 
 ## 8. Command-line run and validation
 What to show: a terminal run of workbench.exe all, plus the two validation
@@ -118,5 +117,5 @@ workbench.exe validate-csv data/ansys_temperature_synthetic.csv  -> CSV OK: 25 n
 
 ## 9. What was not shown, honestly
 - Handwritten backprop appendix: separate, scanned by the candidate (see Task F).
-- Real Windows launch-to-ready time: recorded in step 2 above (~2.4 s cold start on Windows 11 AMD Ryzen 5 5600H).
+- A cold clean-machine browser stopwatch measurement is still unconfirmed. The measured launcher-process duration was 0.511 s from the extracted archive, exit code 0.
 - Known limitations: see README.md (larger STL/CSV files not benchmarked beyond a few thousand items; VS Code one-action run smoke-tested via serve.py).

@@ -1,6 +1,6 @@
 # Package the one-click Windows app. Run after build_windows.bat.
-# Output: RA2311033010060_Workbench.zip in the project folder.
-param([string]$CandidateId = "RA2311033010060")
+# Output: Gladwin_Benjamin_Workbench.zip in the project folder.
+param([string]$ArchiveName = "Gladwin_Benjamin_Workbench.zip")
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 $stage = Join-Path $env:TEMP "workbench-stage"
@@ -14,8 +14,11 @@ Copy-Item (Join-Path $root "src") (Join-Path $stage "src") -Recurse
 Copy-Item (Join-Path $root "data") (Join-Path $stage "data") -Recurse
 Copy-Item (Join-Path $root "tests") (Join-Path $stage "tests") -Recurse
 Copy-Item (Join-Path $root "docs") (Join-Path $stage "docs") -Recurse
+Remove-Item (Join-Path $stage "docs\report.pdf") -Force -ErrorAction SilentlyContinue
 Copy-Item (Join-Path $root "scripts") (Join-Path $stage "scripts") -Recurse
 Copy-Item (Join-Path $root "README.md") $stage
+Copy-Item (Join-Path $root "CORRECTION_NOTE.txt") $stage
+Copy-Item (Join-Path $root "docs\report.pdf") (Join-Path $stage "report_final.pdf")
 Copy-Item (Join-Path $root "CMakeLists.txt") $stage
 Copy-Item (Join-Path $root "build_windows.bat") $stage
 Copy-Item (Join-Path $root "toolchain-mingw.cmake") $stage
@@ -25,7 +28,7 @@ if (Test-Path $bundle) { Copy-Item $bundle $stage }
 # VS Code one-action run config
 $vscode = Join-Path $root ".vscode"
 if (Test-Path $vscode) { Copy-Item $vscode (Join-Path $stage ".vscode") -Recurse }
-$zip = Join-Path $root "$CandidateId`_Workbench.zip"
+$zip = Join-Path $root $ArchiveName
 if (Test-Path $zip) { Remove-Item $zip -Force }
 Compress-Archive -Path "$stage\*" -DestinationPath $zip
 Write-Host "Wrote $zip"
