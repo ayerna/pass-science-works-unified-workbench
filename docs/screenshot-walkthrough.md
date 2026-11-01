@@ -3,7 +3,7 @@
 CandidateID: Not assigned at time of submission
 Machine and OS for this walkthrough: Windows 11 host, extracted archive tested at `D:\ass\clean-test`
 Date and time started: 2026-11-01 23:03 IST
-Launcher process timing: 0.511 s from starting `Launch.exe` until the launcher process exited successfully (exit 0). Browser readiness was then confirmed by opening the extracted `frontend/index.html`; this is not claimed as a cold clean-machine browser stopwatch measurement.
+Launcher process timing: 0.470 s from starting `Launch.exe` until the final archive's launcher process exited successfully (exit 0). Browser readiness was then confirmed by opening the extracted `frontend/index.html`; this is not claimed as a cold clean-machine browser stopwatch measurement.
 
 How to use this file: work through the steps in order on the Windows machine,
 take one screenshot per step, paste each screenshot under its heading, and
@@ -22,7 +22,7 @@ browser, with all four view buttons visible (Geometry, Thermal, Performance,
 Hardware). No terminal, admin prompt or install step should appear.
 
 [Screenshot: workbench open after double-click]
-Launch process timing for this run: 0.511 s; browser readiness confirmed separately, but no cold clean-machine stopwatch value is claimed.
+Launch process timing for this run: 0.470 s; browser readiness confirmed separately, but no cold clean-machine stopwatch value is claimed.
 
 ## 3. Geometry: STL rotate, pan, zoom, fit
 What to show: the 1 m cube, rotated from its starting view, then after
@@ -117,5 +117,5 @@ workbench.exe validate-csv data/ansys_temperature_synthetic.csv  -> CSV OK: 25 n
 
 ## 9. What was not shown, honestly
 - Handwritten backprop appendix: separate, scanned by the candidate (see Task F).
-- A cold clean-machine browser stopwatch measurement is still unconfirmed. The measured launcher-process duration was 0.511 s from the extracted archive, exit code 0.
+- A cold clean-machine browser stopwatch measurement is still unconfirmed. The measured launcher-process duration was 0.470 s from the final extracted archive, exit code 0.
 - Known limitations: see README.md (larger STL/CSV files not benchmarked beyond a few thousand items; VS Code one-action run smoke-tested via serve.py).

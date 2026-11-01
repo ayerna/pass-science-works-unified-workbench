@@ -3,5 +3,6 @@ Receipt date: To be confirmed, deadline given as 2nd November 2026 at 10:00 am
 Archive naming: Gladwin_Benjamin_Workbench.zip is used because no CandidateID was assigned. If Pass Science Works later supplies a CandidateID, rename it to CandidateID_Workbench.zip.
 
 The supplied working folder did not contain the referenced handwritten Task F appendix scans,
-ass.pdf, report_final.pdf, or live Windows screenshots. They are therefore not represented as
-verified deliverables here. The clean-machine Windows launch-to-ready time is unconfirmed.
+ass.pdf, or the original report_final.pdf. The final archive includes a regenerated report_final.pdf
+and four screenshots captured from the extracted package. The clean-machine Windows
+launch-to-ready browser time is unconfirmed; the measured launcher-process duration was 0.470 s.
