@@ -1,6 +1,6 @@
 # Package the one-click Windows app. Run after build_windows.bat.
-# Output: CandidateID_Workbench.zip in the project folder (rename CandidateID first).
-param([string]$CandidateId = "CandidateID")
+# Output: RA2311033010060_Workbench.zip in the project folder.
+param([string]$CandidateId = "RA2311033010060")
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 $stage = Join-Path $env:TEMP "workbench-stage"
