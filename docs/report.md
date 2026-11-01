@@ -6,6 +6,7 @@
 - **Submission Date:** Not recorded
 - **Tracked Effort:** Not recorded
 - **Primary Delivery Target:** Windows 11 x64 (clean-machine launch gate unconfirmed)
+- **Project repository:** https://github.com/ayerna/pass-science-works-unified-workbench
 
 ---
 
